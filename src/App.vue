@@ -2,13 +2,17 @@
   <div class="container">
     <GobalHeader :user="user" />
     <ColumnLists :lists="testData" />
+    <label for="" class="form-label">邮箱</label>
+    <ValidateInput :rules="rules" v-model:emial="email" />
+    {{ email }}
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import ColumnLists, { ColumnListProps } from "./components/columLists.vue";
 import GobalHeader, { UserProps } from "./components/gobalHeader.vue";
+import ValidateInput, { InputRules } from "./components/ValidateInput.vue";
 const testData: ColumnListProps[] = [
   {
     id: 1,
@@ -46,6 +50,16 @@ const testData: ColumnListProps[] = [
       "http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5ee22dd58b3c4520912b9470.jpg?x-oss-process=image/resize,m_pad,h_100,w_100",
   },
 ];
+const rules: InputRules[] = [
+  {
+    type: "required",
+    message: "填写内容不能为空",
+  },
+  {
+    type: "email",
+    message: "填写正确的格式",
+  },
+];
 const user: UserProps = {
   isLogin: true,
   name: "红光",
@@ -55,11 +69,15 @@ export default defineComponent({
   components: {
     ColumnLists,
     GobalHeader,
+    ValidateInput,
   },
   setup() {
+    const email = ref("");
     return {
       testData,
       user,
+      rules,
+      email,
     };
   },
 });

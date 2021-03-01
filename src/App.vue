@@ -94,6 +94,7 @@ export default defineComponent({
     const email = ref("");
     const password = ref("");
     const onFormSubmit = (value) => {
+      // 返回验证的值
       console.log(value);
     };
     return {

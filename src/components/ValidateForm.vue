@@ -17,7 +17,7 @@ export default defineComponent({
   name: "validateForm",
   emits: ["form-submit"],
   setup(props, context) {
-    const submitArr: FunctionSubmit[] = [];
+    let submitArr: FunctionSubmit[] = [];
     const submit = () => {
       const res = submitArr.map((item) => item()).every((item) => item);
       context.emit("form-submit", res);
@@ -27,9 +27,15 @@ export default defineComponent({
     });
     onUnmounted(() => {
       emitter.off("form-item-create");
+      emitter.off("clear-form");
+      submitArr = [];
     });
+    const clearFormItem = () => {
+      emitter.emit("clear-form");
+    };
     return {
       submit,
+      clearFormItem,
     };
   },
 });

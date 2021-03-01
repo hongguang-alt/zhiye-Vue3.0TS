@@ -64,8 +64,12 @@ export default defineComponent({
     };
     onMounted(() => {
       emitter.emit("form-item-created", handleBlur);
+      emitter.on("clear-form", () => {
+        inputInfo.value = "";
+        inputInfo.error = false;
+        inputInfo.message = "";
+      });
     });
-
     return {
       handleBlur,
       inputInfo,

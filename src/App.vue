@@ -1,18 +1,30 @@
 <template>
   <div class="container">
     <GobalHeader :user="user" />
-    <ColumnLists :lists="testData" />
-    <label for="" class="form-label">邮箱</label>
-    <ValidateInput :rules="rules" v-model:emial="email" />
-    {{ email }}
+    <!-- <ColumnLists :lists="testData" /> -->
+    <ValidateForm @form-submit="onFormSubmit">
+      <div>
+        <label for="" class="form-label">邮箱</label>
+        <ValidateInput :rules="rules" v-model="email" type="text" />
+      </div>
+      <div>
+        <label for="" class="form-label">密码</label>
+        <ValidateInput
+          :rules="rulespassword"
+          v-model="password"
+          type="password"
+        />
+      </div>
+    </ValidateForm>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import ColumnLists, { ColumnListProps } from "./components/columLists.vue";
+// import ColumnLists, { ColumnListProps } from "./components/columLists.vue";
 import GobalHeader, { UserProps } from "./components/gobalHeader.vue";
 import ValidateInput, { InputRules } from "./components/ValidateInput.vue";
+import ValidateForm from "./components/ValidateForm.vue";
 const testData: ColumnListProps[] = [
   {
     id: 1,
@@ -60,6 +72,12 @@ const rules: InputRules[] = [
     message: "填写正确的格式",
   },
 ];
+const rulespassword: InputRules = [
+  {
+    type: "required",
+    message: "填写内容不能为空",
+  },
+];
 const user: UserProps = {
   isLogin: true,
   name: "红光",
@@ -67,17 +85,25 @@ const user: UserProps = {
 export default defineComponent({
   name: "App",
   components: {
-    ColumnLists,
+    // ColumnLists,
     GobalHeader,
     ValidateInput,
+    ValidateForm,
   },
   setup() {
     const email = ref("");
+    const password = ref("");
+    const onFormSubmit = (value) => {
+      console.log(value);
+    };
     return {
       testData,
       user,
       rules,
       email,
+      password,
+      onFormSubmit,
+      rulespassword,
     };
   },
 });

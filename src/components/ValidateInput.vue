@@ -1,12 +1,12 @@
 <template>
   <div class="validate-container-input">
     <input
-      type="text"
       class="form-control"
       :class="{ 'is-invalid': inputInfo.error }"
       @blur="handleBlur"
       :value="inputInfo.value"
       @input="handleInput"
+      v-bind="$attrs"
     />
     <span v-if="inputInfo.error" class="invalid-feedback">{{
       inputInfo.message
@@ -15,36 +15,39 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive } from "vue";
+import { defineComponent, onMounted, PropType, reactive } from "vue";
+import mitt from "mitt";
 const emailReg = /[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/;
 export interface InputRules {
   type: "required" | "email";
   message: string;
 }
+export const emitter = mitt();
 export default defineComponent({
   name: "validateInput",
   props: {
     rules: {
       type: Array as PropType<InputRules[]>,
     },
-    emial: {
+    modelValue: {
       type: String,
     },
   },
-  emits: ["update:emial"],
+  inheritAttrs: false,
+  emits: ["update:modelValue"],
   setup(props, ctx) {
     const inputInfo = reactive({
-      value: props.emial || "",
+      value: props.modelValue || "",
       error: false,
       message: "",
     });
     const handleInput = (e: KeyboardEvent) => {
       const val = (e.target as HTMLInputElement).value;
       inputInfo.value = val;
-      ctx.emit("update:emial", val);
+      ctx.emit("update:modelValue", val);
     };
     const handleBlur = () => {
-      if (!props.rules) return;
+      if (!props.rules) return true;
       const allPass = props.rules.every((rule: InputRules) => {
         inputInfo.message = rule.message;
         switch (rule.type) {
@@ -57,7 +60,12 @@ export default defineComponent({
         }
       });
       inputInfo.error = !allPass;
+      return allPass;
     };
+    onMounted(() => {
+      emitter.emit("form-item-created", handleBlur);
+    });
+
     return {
       handleBlur,
       inputInfo,

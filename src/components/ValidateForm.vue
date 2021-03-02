@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted } from "vue";
-import { emitter } from "./ValidateInput";
+import { emitter } from "./ValidateInput.vue";
 export type FunctionSubmit = () => boolean;
 export default defineComponent({
   name: "validateForm",
@@ -22,12 +22,14 @@ export default defineComponent({
       const res = submitArr.map((item) => item()).every((item) => item);
       context.emit("form-submit", res);
     };
-    emitter.on("form-item-created", (callback: FunctionSubmit) => {
-      submitArr.push(callback);
-    });
+    const addSubmit = (callback: FunctionSubmit | undefined) => {
+      if (callback) {
+        submitArr.push(callback);
+      }
+    };
+    emitter.on("form-item-created", addSubmit);
     onUnmounted(() => {
-      emitter.off("form-item-create");
-      emitter.off("clear-form");
+      emitter.off("form-item-created", addSubmit);
       submitArr = [];
     });
     const clearFormItem = () => {

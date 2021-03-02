@@ -1,17 +1,19 @@
 <template>
   <div class="row">
-    <div class="card col-4 mb-4" v-for="item in columnLists" :key="item.id">
-      <div class="card-body text-center">
-        <img
-          :src="item.avatarUrl"
-          :alt="item.title"
-          class="rounded-circle border border-light w-25 my-3"
-        />
-        <h5 class="card-title">{{ item.title }}</h5>
-        <p class="card-text text-left">
-          {{ item.description }}
-        </p>
-        <a href="#" class="btn btn-outline-primary">去专栏</a>
+    <div class="col-4 mb-4" v-for="item in columnLists" :key="item.id">
+      <div class="card">
+        <div class="card-body text-center">
+          <img
+            :src="item.avatarUrl"
+            :alt="item.title"
+            class="rounded-circle border border-light w-25 my-3"
+          />
+          <h5 class="card-title">{{ item.title }}</h5>
+          <p class="card-text text-left">
+            {{ item.description }}
+          </p>
+          <a class="btn btn-outline-primary">去专栏</a>
+        </div>
       </div>
     </div>
   </div>

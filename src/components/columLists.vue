@@ -12,7 +12,9 @@
           <p class="card-text text-left">
             {{ item.description }}
           </p>
-          <a class="btn btn-outline-primary">去专栏</a>
+          <router-link :to="`/lists/${item.id}`" class="btn btn-outline-primary"
+            >去专栏</router-link
+          >
         </div>
       </div>
     </div>

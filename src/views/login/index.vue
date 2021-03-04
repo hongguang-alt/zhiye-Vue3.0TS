@@ -14,6 +14,9 @@
         :rules="passwordRules"
         v-model="password"
       ></validate-input>
+      <template #submit>
+        <button class="btn btn-primary w-100" type="submit">登陆</button>
+      </template>
     </validate-form>
   </div>
 </template>

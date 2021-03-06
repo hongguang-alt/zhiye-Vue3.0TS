@@ -7,29 +7,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent } from "vue";
+import { useStore } from "vuex";
 import GobalHeader, { UserProps } from "./components/gobalHeader.vue";
-const user: UserProps = {
-  isLogin: true,
-  name: "红光",
-};
+
 export default defineComponent({
   name: "App",
   components: {
     GobalHeader,
   },
   setup() {
-    const email = ref("");
-    const password = ref("");
-    const onFormSubmit = (value) => {
-      // 返回验证的值
-      console.log(value);
-    };
+    const store = useStore();
+    const user = computed<UserProps>(() => ({
+      isLogin: store.state.isLogin,
+      name: store.state.userInfo.name,
+    }));
     return {
       user,
-      email,
-      password,
-      onFormSubmit,
     };
   },
 });

@@ -25,6 +25,10 @@
 import { defineComponent, ref } from "vue";
 import ValidateForm from "@/components/ValidateForm.vue";
 import ValidateInput from "@/components/ValidateInput.vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { login, ResponseProps } from "../../axios/index";
+
 const emailRules = [
   {
     type: "required",
@@ -48,10 +52,29 @@ export default defineComponent({
     ValidateForm,
   },
   setup() {
-    const email = ref("");
-    const password = ref("");
-    const handleSubmit = (val: boolean) => {
-      console.log(111, val);
+    const router = useRouter();
+    const store = useStore();
+    const email = ref<string>("");
+    const password = ref<string>("");
+    const handleSubmit = async (val: boolean) => {
+      if (val) {
+        try {
+          const res: ResponseProps = await login({
+            email: email.value,
+            password: password.value,
+          });
+          if (res.status === 0) {
+            router.push("/");
+            localStorage.setItem("isLogin", "true");
+            localStorage.setItem("token", res.token as string);
+            localStorage.setItem("userInfo", JSON.stringify(res.result));
+          } else {
+            console.log("登陆失败", res.message);
+          }
+        } catch (e) {
+          console.log("登陆失败", e);
+        }
+      }
     };
     return {
       emailRules,

@@ -1,11 +1,25 @@
 import { createStore } from "vuex";
-const store = createStore({
+
+interface StoreProps {
+  isLogin: boolean;
+  token: string;
+  userInfo: object;
+}
+const store = createStore<StoreProps>({
   state: {
-    count: 0,
+    isLogin: false,
+    token: "",
+    userInfo: {},
   },
   mutations: {
-    addCount(state) {
-      state.count++;
+    setLogin(state, value) {
+      state.isLogin = value;
+    },
+    setToken(state, value) {
+      state.token = value;
+    },
+    setUserInfo(state, obj) {
+      state.userInfo = obj;
     },
   },
 });

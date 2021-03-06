@@ -45,7 +45,7 @@ export default defineComponent({
   name: "lists",
   setup() {
     onMounted(() => {
-      console.log(route.path);
+      console.log(route);
     });
     return { lists };
   },

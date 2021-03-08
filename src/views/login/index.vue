@@ -19,14 +19,15 @@
       </template>
     </validate-form>
   </div>
+  <Loading v-if="loading" text="加载中......" />
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import ValidateForm from "@/components/ValidateForm.vue";
 import ValidateInput from "@/components/ValidateInput.vue";
+import Loading from "@/components/loading.vue";
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
 import { login, ResponseProps } from "../../axios/index";
 
 const emailRules = [
@@ -50,12 +51,13 @@ export default defineComponent({
   components: {
     ValidateInput,
     ValidateForm,
+    Loading,
   },
   setup() {
     const router = useRouter();
-    const store = useStore();
     const email = ref<string>("");
     const password = ref<string>("");
+    const loading = ref<boolean>(false);
     const handleSubmit = async (val: boolean) => {
       if (val) {
         try {
@@ -63,15 +65,19 @@ export default defineComponent({
             email: email.value,
             password: password.value,
           });
+          loading.value = true;
           if (res.status === 0) {
             router.push("/");
             localStorage.setItem("isLogin", "true");
             localStorage.setItem("token", res.token as string);
             localStorage.setItem("userInfo", JSON.stringify(res.result));
+            loading.value = false;
           } else {
             console.log("登陆失败", res.message);
+            loading.value = false;
           }
         } catch (e) {
+          loading.value = false;
           console.log("登陆失败", e);
         }
       }
@@ -82,6 +88,7 @@ export default defineComponent({
       handleSubmit,
       email,
       password,
+      loading,
     };
   },
 });

@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from "axios";
-
 axios.defaults.baseURL = "http://localhost:3000/api";
 
 // Add a request interceptor
@@ -21,10 +20,9 @@ axios.interceptors.request.use(
 // Add a response interceptor
 axios.interceptors.response.use(
   function (response) {
-    const data = response.data;
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    return data;
+    return response.data;
   },
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger

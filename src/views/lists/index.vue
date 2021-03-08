@@ -23,7 +23,7 @@
             <div class="card-body">
               <h5 class="card-title">{{ item.title }}</h5>
               <p class="card-text">
-                {{ item.description }}
+                {{ item.content }}
               </p>
               <p class="card-text">
                 <small class="text-muted">{{ item.time }}</small>
@@ -37,15 +37,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import { getPostById, resProps, ResponseProps } from "@/axios/index";
 import { useRoute } from "vue-router";
-import { lists } from "@/data";
-const route = useRoute();
 export default defineComponent({
   name: "lists",
   setup() {
-    onMounted(() => {
-      console.log(route);
+    const route = useRoute();
+    // 对象也是，整体替换的时候
+    const lists = ref<resProps[]>([]);
+    onMounted(async () => {
+      const id = route.params.id as string;
+      try {
+        const res: ResponseProps = await getPostById({ id });
+        lists.value = res.result;
+      } catch (e) {
+        console.log(e);
+      }
     });
     return { lists };
   },

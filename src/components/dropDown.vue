@@ -27,7 +27,6 @@ export default defineComponent({
   setup() {
     const isOpen = ref(false);
     const setIsOpen = () => {
-      console.log(isOpen.value);
       isOpen.value = !isOpen.value;
     };
     const dropdownRef = ref<null | HTMLElement>(null);

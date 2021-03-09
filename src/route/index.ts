@@ -32,7 +32,6 @@ router.beforeEach((to, _form, next) => {
   const isLogin = localStorage.getItem("isLogin") || "false";
   const userInfo = localStorage.getItem("userInfo") || "{}";
   const token = localStorage.getItem("token") || "";
-  console.log(isLogin, userInfo, token);
   if (JSON.parse(isLogin)) {
     store.commit("setLogin", true);
     store.commit("setUserInfo", JSON.parse(userInfo));

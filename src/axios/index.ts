@@ -14,6 +14,12 @@ export const login = (params: loginProps) => {
   return axios.post("/user/login", params);
 };
 
+export type listProps = {
+  id: number;
+  title: string;
+  description: string;
+  avatarUrl?: string;
+};
 // 获取专栏列表
 export const getLists = () => {
   return axios.get("/other/getAllColumnList");

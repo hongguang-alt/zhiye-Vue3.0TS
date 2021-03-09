@@ -4,17 +4,19 @@
     <router-view></router-view>
     <div class="bottom">© honggaung版权所有</div>
   </div>
+  <Loading v-if="loading" />
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import { useStore } from "vuex";
 import GobalHeader, { UserProps } from "./components/gobalHeader.vue";
-
+import Loading from "@/components/loading.vue";
 export default defineComponent({
   name: "App",
   components: {
     GobalHeader,
+    Loading,
   },
   setup() {
     const store = useStore();
@@ -22,8 +24,10 @@ export default defineComponent({
       isLogin: store.state.isLogin,
       name: store.state.userInfo.name,
     }));
+    const loading = computed(() => store.state.loading);
     return {
       user,
+      loading,
     };
   },
 });

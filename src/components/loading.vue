@@ -12,7 +12,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted } from "vue";
+import { defineComponent } from "vue";
+import useMount from "@/hooks/useMount";
+
 export default defineComponent({
   name: "loading",
   props: {
@@ -22,12 +24,7 @@ export default defineComponent({
     },
   },
   setup() {
-    const dom = document.createElement("div");
-    dom.id = "back";
-    document.body.appendChild(dom);
-    onUnmounted(() => {
-      document.body.removeChild(dom);
-    });
+    useMount("back");
   },
 });
 </script>

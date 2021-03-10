@@ -28,6 +28,7 @@ import ValidateInput from "@/components/ValidateInput.vue";
 import { useRouter } from "vue-router";
 import { login, ResponseProps } from "../../axios/index";
 import { useStore } from "vuex";
+import message from "@/components/message";
 const emailRules = [
   {
     type: "required",
@@ -64,6 +65,7 @@ export default defineComponent({
             password: password.value,
           });
           if (res.status === 0) {
+            message("success", "登陆成功");
             store.commit("setLoading", false);
             router.push("/");
             localStorage.setItem("isLogin", "true");
@@ -72,10 +74,11 @@ export default defineComponent({
           } else {
             store.commit("setLoading", false);
             console.log("登陆失败", res.message);
+            message("danger", "登陆失败");
           }
         } catch (e) {
           store.commit("setLoading", false);
-          console.log("登陆失败", e);
+          message("danger", "登陆失败");
         }
       }
     };

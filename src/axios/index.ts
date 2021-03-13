@@ -43,3 +43,8 @@ export const getPostById = (params: postProps) => {
     params,
   });
 };
+
+// 上传文件接口
+export const uploadImg = (params: FormData) => {
+  return axios.post("/other/upload", params);
+};

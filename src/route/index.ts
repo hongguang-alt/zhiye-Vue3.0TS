@@ -3,6 +3,7 @@ import store from "../store/index";
 import Home from "../views/home/index.vue";
 import Login from "../views/login/index.vue";
 import Lists from "../views/lists/index.vue";
+import Create from "../views/create/index.vue";
 
 const routes = [
   {
@@ -20,6 +21,14 @@ const routes = [
     name: "lists",
     component: Lists,
   },
+  {
+    path: "/create",
+    name: "create",
+    component: Create,
+    meta: {
+      needLogin: true,
+    },
+  },
 ];
 
 const router = createRouter({
@@ -28,7 +37,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _form, next) => {
-  // 判断登陆信息
+  const { needLogin } = to.meta;
+  // 判断登陆信息,如果登陆了，会存放在local中，设置store即可
   const isLogin = localStorage.getItem("isLogin") || "false";
   const userInfo = localStorage.getItem("userInfo") || "{}";
   const token = localStorage.getItem("token") || "";
@@ -37,6 +47,13 @@ router.beforeEach((to, _form, next) => {
     store.commit("setUserInfo", JSON.parse(userInfo));
     store.commit("setToken", token);
   }
-  next();
+  if (needLogin) {
+    if (isLogin && token) {
+      return next();
+    } else {
+      return next("/login");
+    }
+  }
+  return next();
 });
 export default router;

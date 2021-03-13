@@ -13,7 +13,7 @@
     </ul>
     <ul v-else class="list-inline mb-0">
       <DropDown :title="`您好 , ${user && user.name}`">
-        <DropDownItem> 新建文章</DropDownItem>
+        <DropDownItem @click="toCreate"> 新建文章</DropDownItem>
         <DropDownItem @click="logout"> 退出登录 </DropDownItem>
       </DropDown>
     </ul>
@@ -56,9 +56,13 @@ export default defineComponent({
       store.commit("setLogin", false);
       router.push({ name: "login" });
     };
+    const toCreate = () => {
+      router.push("/create");
+    };
     return {
       handleLogin,
       logout,
+      toCreate,
     };
   },
 });

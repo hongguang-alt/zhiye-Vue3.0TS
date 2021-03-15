@@ -1,12 +1,23 @@
 <template>
   <div class="validate-container-input">
-    <input
+    <textarea
       class="form-control"
       :class="{ 'is-invalid': inputInfo.error }"
       @blur="handleBlur"
       :value="inputInfo.value"
       @input="handleInput"
       v-bind="$attrs"
+      v-if="type === 'textarea'"
+    ></textarea>
+    <input
+      v-else
+      class="form-control"
+      :class="{ 'is-invalid': inputInfo.error }"
+      @blur="handleBlur"
+      :value="inputInfo.value"
+      @input="handleInput"
+      v-bind="$attrs"
+      :type="type"
     />
     <span v-if="inputInfo.error" class="invalid-feedback">{{
       inputInfo.message
@@ -30,6 +41,9 @@ export default defineComponent({
       type: Array as PropType<InputRules[]>,
     },
     modelValue: {
+      type: String,
+    },
+    type: {
       type: String,
     },
   },
